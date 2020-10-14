@@ -1,0 +1,28 @@
+service: node-text-analysis-via-sns
+
+frameworkVersion: "2.7.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-1
+  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "sns:*"
+
+functions:
+  addNote:
+    handler: addNote.addNote
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
+
+  analyzeNote:
+    handler: analyzeNote.analyzeNote
+    events:
+      - sns: analyzeNote
